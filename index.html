@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <link rel="stylesheet" type="text/css" href="bkv.css" />
+  <title>Budapest kötöttpályás közlekedéshálózata</title>
+  <script src="http://openlayers.org/api/OpenLayers.js"></script>
+  <script type="text/javascript">
+
+   var feature,map,filter1,filter2,filter3,metro,hev,vili,troli;
+   var mezok={'jaratszam':'Viszonylat száma',
+          'tipus':'Járat típusa',
+          'ervkezdet':'Érvényesség kezdete',
+		  'ervveg':'Érvényesség vége'};
+			  
+   function dump(o) // a paraméterként kapott elem.attributes tulajdonságait kiírja az 'info' nevű divben
+   {
+     feature=o;
+     var d=document.getElementById('info');
+     var s='';
+     if (o) // ha van mit kiiratni...
+     {
+       s='<table>';
+       for(i in o.attributes)
+         s+='<tr><th>'+mezok[i]+'</th><td>'+o.attributes[i]+'</td></tr>';
+       s+='</table><p style="float: right"><input type="button" value="Ránagyít" onclick="map.zoomToExtent(feature.geometry.bounds)"></p>';
+     }     
+     d.innerHTML=s;
+   }
+   
+   function init() // az oldal betöltésekor végrehajtandó függvény
+   {     
+     // létrehozzuk a térképet a 'terkep_helye' azonosítójú div elemben
+     map = new OpenLayers.Map('terkep_helye', 
+       {
+	   // allOverlays: true - kiiktatható a térkép
+       });
+     map.addLayer(new OpenLayers.Layer.OSM());
+     // dátum filterek és név filter
+     filter1=new OpenLayers.Filter.Comparison(
+               {
+                 type: OpenLayers.Filter.Comparison.LESS_THAN_OR_EQUAL_TO,
+                 property: "ervkezdet",
+                 value: "2014-04-01"
+               });
+     filter2=new OpenLayers.Filter.Comparison(
+               {
+                 type: OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
+                 property: "ervveg",
+                 value: "2014-04-01"
+               });
+     filter3=new OpenLayers.Filter.Comparison(
+              {
+                 type: OpenLayers.Filter.Comparison.LIKE,
+                 property: "jaratszam",
+                 value: "*"
+              });
+     // csinálunk néhány layert...
+     vili=new OpenLayers.Layer.Vector(
+          "Villamos",
+          {
+            isBaseLayer: false,
+            strategies: [new OpenLayers.Strategy.BBOX()],
+            protocol: new OpenLayers.Protocol.WFS(
+              {
+                version: "1.0.0",
+                url: "http://mercator.elte.hu/cgi-bin/mapserv?map=/home/hal2010/herbal/fajlok/bkv.map",
+                featureType: "vonalak",
+                srsName: "EPSG:4326",
+                propertyNames: ['msGeometry','jaratszam','tipus','ervkezdet','ervveg']
+              }),
+            styleMap: new OpenLayers.StyleMap(
+              {
+                select: new OpenLayers.Style(
+                {
+                    strokeWidth: 1,
+                    strokeColor: "#FF0000"
+                })
+              }),
+            filter: new OpenLayers.Filter.Logical(
+                      {
+                        type: OpenLayers.Filter.Logical.AND,
+                        filters: [
+                                   new OpenLayers.Filter.Comparison({
+                                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                     property: "route_type",
+                                     value: 0
+                                   }),
+                                   filter1,
+                                   filter2,
+                                   filter3
+                                 ]
+                      })
+          });
+     metro=new OpenLayers.Layer.Vector(
+          "Metró",
+          {
+            isBaseLayer: false,
+            strategies: [new OpenLayers.Strategy.BBOX()],
+            protocol: new OpenLayers.Protocol.WFS(
+              {
+                version: "1.0.0",
+                url: "http://mercator.elte.hu/cgi-bin/mapserv?map=/home/hal2010/herbal/fajlok/bkv.map",
+                featureType: "vonalak",
+                srsName: "EPSG:4326",
+                propertyNames: ['msGeometry','jaratszam','tipus','ervkezdet','ervveg']
+              }),
+            styleMap: new OpenLayers.StyleMap(
+              {
+                select: new OpenLayers.Style(
+                {
+                    strokeWidth: 1,
+                    strokeColor: "#FF0000"
+                })
+              }),
+            filter: new OpenLayers.Filter.Logical(
+                      {
+                        type: OpenLayers.Filter.Logical.AND,
+                        filters: [
+                                   new OpenLayers.Filter.Comparison({
+                                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                     property: "route_type",
+                                     value: 1
+                                   }),
+                                   filter1,
+                                   filter2,
+                                   filter3
+                                 ]
+                      })
+          });
+     hev=new OpenLayers.Layer.Vector(
+          "HÉV",
+          {
+            isBaseLayer: false,
+            strategies: [new OpenLayers.Strategy.BBOX()],
+            protocol: new OpenLayers.Protocol.WFS(
+              {
+                version: "1.0.0",
+                url: "http://mercator.elte.hu/cgi-bin/mapserv?map=/home/hal2010/herbal/fajlok/bkv.map",
+                featureType: "vonalak",
+                srsName: "EPSG:4326",
+                propertyNames: ['msGeometry','jaratszam','tipus','ervkezdet','ervveg']
+              }),
+            styleMap: new OpenLayers.StyleMap(
+              {
+                select: new OpenLayers.Style(
+                {
+                    strokeWidth: 1,
+                    strokeColor: "#00FF80"
+                })
+              }),
+            filter: new OpenLayers.Filter.Logical(
+                      {
+                        type: OpenLayers.Filter.Logical.AND,
+                        filters: [
+                                   new OpenLayers.Filter.Comparison({
+                                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                     property: "route_type",
+                                     value: 2
+                                   }),
+                                   filter1,
+                                   filter2,
+                                   filter3
+                                 ]
+                      })
+          });
+     troli=new OpenLayers.Layer.Vector(
+          "Troli",
+          {
+            isBaseLayer: false,
+            strategies: [new OpenLayers.Strategy.BBOX()],
+            protocol: new OpenLayers.Protocol.WFS(
+              {
+                version: "1.0.0",
+                url: "http://mercator.elte.hu/cgi-bin/mapserv?map=/home/hal2010/herbal/fajlok/bkv.map",
+                featureType: "vonalak",
+                srsName: "EPSG:4326",
+                propertyNames: ['msGeometry','jaratszam','tipus','ervkezdet','ervveg']
+              }),
+            styleMap: new OpenLayers.StyleMap(
+              {
+                select: new OpenLayers.Style(
+                {
+                    strokeWidth: 1,
+                    strokeColor: "#00FFFF"
+                })
+              }),
+            filter: new OpenLayers.Filter.Logical(
+                      {
+                        type: OpenLayers.Filter.Logical.AND,
+                        filters: [
+                                   new OpenLayers.Filter.Comparison({
+                                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                     property: "route_type",
+                                     value: 4
+                                   }),
+                                   filter1,
+                                   filter2,
+                                   filter3
+                                 ]
+                      })
+          });
+     // és hozzáadjuk a térképhez     
+     map.addLayers([metro,vili,hev,troli]);
+     metro.styleMap.styles.default=new OpenLayers.Style({strokeColor:"#000080", strokeWidth: 2});
+     hev.styleMap.styles.default=new OpenLayers.Style({strokeColor:"#00A000", strokeWidth: 2});
+     vili.styleMap.styles.default=new OpenLayers.Style({strokeColor:"#FFD000", strokeWidth: 2});
+     troli.styleMap.styles.default=new OpenLayers.Style({strokeColor:"#C00000", strokeWidth: 2});
+     map.addControl(new OpenLayers.Control.LayerSwitcher());
+     // hozzáadunk egy SelectFeature controlt. Ezzel egyszerűen kijelölhetők elemek a vektoros rétegen
+     var sft=new OpenLayers.Control.SelectFeature([metro,vili,hev,troli],
+        {
+          toggle: true, // az elemre kattintás ki-be kapcsolja a kijelölést
+          onSelect: function(feature) { dump(feature); }, // eseménykezelő - kiiratjuk a kijelölt elem tulajdonságait
+          onUnselect: function(feature) { dump(null); } // eseménykezelő - ha semmi sincs kijelölve, nem írunk ki semmit
+        });
+     map.addControl(sft);
+     // aktiváljuk a SelectFeature controlt
+     sft.activate();     
+     // kb. Magyarországra nagyítunk
+     map.zoomToExtent(new OpenLayers.Bounds(2100000,5950000,2150000,6050000));
+   }
+   
+   function setFilters(ev1,ev2)
+   {
+     filter1.value=ev1;filter2.value=ev2;
+     metro.refresh({force:true});
+     hev.refresh({force:true});
+     vili.refresh({force:true});
+     troli.refresh({force:true});
+   }
+   
+   function setFilter3(jarat)
+   {
+     if (jarat=='')
+       filter3.value='*';
+     else  
+       filter3.value=jarat;
+     metro.refresh({force:true});
+     hev.refresh({force:true});
+     vili.refresh({force:true});
+     troli.refresh({force:true});
+   }   
+  </script>
+ </head>
+ <body onload="init()">
+  <div id="tartalom">
+  <header>
+  <h1>Budapest kötöttpályás<br>közlekedéshálózata</h1>
+  </header>
+  <h2>Üdvözlöm weboldalamon!</h2>
+  <p>Jelen weboldal a BSc-s szakdolgozatomhoz készült, amelyben Budapest metró-, helyiérdekű vasút-, villamos-, és trolibuszhálózatát mutatom be. 
+  A térképet az OpenStreetMap.org honlapról elérhető, ingyenes térképszolgáltatás biztosítja, a vektoros állományokat a Budapesti Közlekedési 
+  Központ honlapján elérhető GTFS adatbázisból kiindulva magam készítettem el különböző térinformatikai és térképészeti programok segítségével. 
+  Ezen vonalak adatait villamosbarátok oldalairól, illetve a Wikipédiáról szereztem be.</p>
+  <p>Az itt található térképen grafikusan, a mai közlekedési állapotokhoz képest jelennek meg a mai és a már megszüntetett közlekedési eszközök 
+  útvonalai. Alapesetben az aktuális (2014. április 1.) állapot jelenik meg. Lehet természetesen keresni visszamenőlegesen is, egészen 1950-ig 
+  egyes járatokra, járatszámokra, vagy az adott napokra. Ehhez a térkép alatt található űrlapot lehet használni.</p>
+  <p>Néhány tipp kereséshez:</p>
+  <ul>
+   <li>Közlekedés adott napon: csak a napkereső kitöltésével</li>
+   <li>Viszonylatok időtartamon belül: időtartamkereső kitöltésével</li>
+   <li>Egyes járatok története: járatszűrő kitöltésével és egy hosszabb időtartam megadásával</li>
+  </ul>
+  <p>Az űrlapon található időszűrőket <abbr title="év">éééé</abbr>-<abbr title="hónap">hh</abbr>-<abbr title="nap">nn</abbr> formátumban, a 
+  járatoknál pedig bármilyen szöveget, vagy számot meg lehet adni. Metróknál M1-M3, HÉV-eknél 2011-től H5-H9 alkalmazandó. 2011 előtt pedig a külső 
+  végállomás nevét kell megadni (pl. Szentendrei, Törökbálinti). Villamosoknál és troliknál a járatszámot kell megadni. Lehetséges speciális 
+  karaktereket is alkalmazni, a * karakterrel bármilyen hosszúságú karakterlánc helyettesíthető. Például az 1* megadásával az 1-es, 12-es, 14-es, 
+  18-as és 19-es villamos is megjelenik.</p>
+  <p>Egyes járműveket is lehet szűrni, ehhez a térkép jobb felső sarkán található +-ra, majd a járművek neve melletti jelölőnégyzeteket kell kijelölni.</p>
+  <p>Az adatbázisomat folyamatosan tervezem frissíteni, amennyiben észrevételei lennének, <a href="mailto:herczegb1117@gmail.com">erre</a> a linkre 
+  kattintva üzenetet küldhet nekem.</p>
+  <p>Kellemes böngészést!</p>
+  <div id="terkep">
+   <div id="info"></div>
+   <div id="terkep_helye"></div>
+  </div>
+  <form>
+  <fieldset class="bal">
+   <legend>Szűrés megadott napra</legend>
+   <p>
+   <label for="evszam">Kért nap:</label>
+   <input type="text" value="2014-04-01" id="evszam" size="10" maxlength="10">
+   </p>
+   <p class="gomb">
+   <input type="button" value="Mehet" onclick="var evszam=document.getElementById('evszam').value;setFilters(evszam,evszam);">
+   <input type="reset">
+   </p>
+  </fieldset>
+  <fieldset class="jobb">
+   <legend>Szűrés megadott időszakra</legend>
+   <p>
+   <label for="beevszam">Első nap megadása:</label>
+   <input type="text" value="1950-01-01" id="beevszam" size="10" maxlength="10">
+   </p>
+   <p>
+   <label for="kievszam">Utolsó nap megadása:</label>
+   <input type="text" value="2014-04-01" id="kievszam" size="10" maxlength="10"></p>
+   <p class="gomb">
+   <input type="button" value="Mehet" onclick="setFilters(document.getElementById('kievszam').value,document.getElementById('beevszam').value)">
+   <input type="reset">
+   </p>
+  </fieldset>
+  <fieldset>
+   <legend>Szűrés járat szerint</legend>
+   <p><label for="jarat">Járatszám megadása:</label>
+   <input type="text" value="" name="jarat" id="jarat" size="20" maxlength="50"></p>
+   <p class="gomb">
+   <input type="button" value="Mehet" onclick="setFilter3(document.getElementById('jarat').value)">
+   <input type="reset">
+   </p>
+  </fieldset>
+  </form>
+  <div id="link">
+   <h2>Hasznos linkek</h2>
+   <p><a href="http://www.bkk.hu">Budapesti Közlekedési Központ</a><br>
+   <a href="http://www.bkv.hu">Budapesti Közlekedési Zrt.</a><br>
+   <a href="http://hampage.hu/kozlekedes">Elveszett sínek - Budapest megszűnt villamosvonalai</a><br>
+   <a href="http://villamosok.hu">villamosok.hu</a></p>
+  </div>
+  <footer>
+  Herczeg Balázs (RU96CV), 2012-2014 (C)
+  </footer>
+  </div>
+ </body>
+</html>

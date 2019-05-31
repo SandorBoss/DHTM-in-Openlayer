@@ -1,0 +1,44 @@
+# Mapfile - BKV
+MAP
+ NAME "BKV"
+ STATUS ON
+ SIZE 800 600 # képméret pixelben
+ IMAGETYPE png
+ EXTENT 18 47 20 48 # a térkép határai
+ PROJECTION
+  "init=epsg:4326" # WGS84 lat/lon
+ END
+ WEB
+  METADATA
+   "wfs_title" "BKV"
+   "wfs_encoding" "WINDOWS-1250" #"ISO-8859-2"   
+   "wfs_srs" "EPSG:4326"
+   "wfs_enable_request" "*"
+  END
+ END
+ 
+ LAYER
+  NAME "vonalak"
+  TYPE line 
+  DATA "bkv_kotott.shp"
+  STATUS DEFAULT
+  PROJECTION
+   "init=epsg:4326"
+  END
+  DUMP true
+
+  METADATA
+   "wfs_title" "vonalak"
+   "wfs_srs" "EPSG:4326"
+   "gml_include_items" "all"
+   "wfs_enable_request" "*"
+  END
+
+  CLASS
+   NAME "default"
+   STYLE 
+     OUTLINECOLOR 255 0 0
+   END
+  END # class default
+ END 
+END

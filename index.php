@@ -8,12 +8,13 @@
   </style>
   <script src="http://openlayers.org/api/OpenLayers.js"></script>
   <script type="text/javascript">
-   function init()
-   {
-     // elinduláskor letölti az OSM térképet és Debrecenre állítja
+   function goToDebrecen() {
+    downloadOSM();
+    map.zoomToExtent(new OpenLayers.Bounds(2400000,6020000,2420000,6040000));
+   }
+   function downloadOSM() {
      var map = new OpenLayers.Map('terkep', {});
      map.addLayer(new OpenLayers.Layer.OSM());
-     map.zoomToExtent(new OpenLayers.Bounds(2400000,6020000,2420000,6040000));
    }
   </script>  
  </head>

@@ -19,6 +19,7 @@
   </script>  
  </head>
  <body onload="init()">
+   <header>Debrecen kötöttpályás közlekedési hálózata</header>
    <div style="width:100%; height:100%" id="terkep"></div>
    <form>
     <fieldset id="day">
@@ -59,5 +60,6 @@
       </p>
     </fieldset>
     </form>
- </body>
+    <footer>(C) 2019 Készítők: Balogh László, Böszörményi Sándor, Herczeg Balázs</footer>
+  </body>
 </html>

@@ -3,6 +3,8 @@ var startView = new ol.View({
       zoom: 12
 });
 
+var geojsonUrl = './geojson/d_line.geojson';
+
 var osm = new ol.layer.Tile({
       source: new ol.source.OSM()
 });
@@ -10,7 +12,7 @@ var osm = new ol.layer.Tile({
 var transportLines = new ol.layer.Vector({
       source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
-          url: './geojson/d_line.geojson'
+          url: geojsonUrl
       })
 });
 

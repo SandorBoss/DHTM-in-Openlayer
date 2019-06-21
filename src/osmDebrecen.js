@@ -1,3 +1,5 @@
+// this is the main engine
+
 var startView = new ol.View({
       center: ol.proj.fromLonLat([21.63079, 47.53013]),
       zoom: 12

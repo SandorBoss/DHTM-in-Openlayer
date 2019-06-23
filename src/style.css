@@ -1,6 +1,6 @@
 body {
   background: #abcdef;
-  font-family: Arial;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 header {
@@ -10,6 +10,7 @@ header {
   margin-bottom: 30px;
   text-align: center;
   font-size: 20px;
+  font-weight: bold;
 }
 
 div.map {

@@ -2,11 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DHTM;
-
-use Exception;
-
-class CheckGeoJSON extends DHTM {
+class CheckGeoJSON {
 
     const DATE_LENGTH = 10;
     const SKIP_VALID_TO = 11;
@@ -42,17 +38,16 @@ class CheckGeoJSON extends DHTM {
         }
     }
 
-    public static function checkGeojson(): boolean {
-        $geojson = openGeojson($geojsonPath);
+    public static function checkGeojsonDates(): boolean {
+        $geojson = static::openGeojson($geojsonPath);
         $areValidDates = true;
         while (feof($geojson)) {
-            $line = getLine($geojson);
-            $validFrom = getValidFrom($line);
-            $validTo = getValidTo($line);
-            $areValidDates = isValidationCorrect($validFrom, $validTo);
-            // missing step for moving next line
+            $line = static::getLine($geojson);
+            $validFrom = static::getValidFrom($line);
+            $validTo = static::getValidTo($line);
+            $areValidDates = static::isValidationCorrect($validFrom, $validTo);
         }
         return $areValidDates;
     }
-
+    
 }

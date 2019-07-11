@@ -11,11 +11,20 @@ var osm = new ol.layer.Tile({
       source: new ol.source.OSM()
 });
 
+var vill = new ol.style.Style({
+       stroke: new ol.style.Stroke({ color: [255,192,0,.75], width: 3 })
+});
+
+var troli = new ol.style.Style({
+       stroke: new ol.style.Stroke({ color: [192,0,0,.75], width: 3 })
+});
+
 var transportLines = new ol.layer.Vector({
       source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
           url: geojsonUrl
-      })
+      }),
+      style: vill
 });
 
 var map = new ol.Map({

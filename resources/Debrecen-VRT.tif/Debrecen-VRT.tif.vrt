@@ -1,0 +1,31 @@
+<VRTDataset rasterYSize="1950" rasterXSize="2923">
+  <SRS>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]</SRS>
+  <GeoTransform>21.495, 4.50644e-5, 0, 47.5852, 0, -4.50644e-5</GeoTransform>
+  <VRTRasterBand NoDataValue="-32768" band="1" dataType="Int16">
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">Debrecen-VRT.tif.0.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties DataType="Byte" RasterXSize="2923" RasterYSize="1950" BlockYSize="1950" BlockXSize="2923"/>
+      <SrcRect xOff="0" yOff="0" ySize="1950" xSize="2923"/>
+      <DstRect xOff="0" yOff="0" ySize="1950" xSize="2923"/>
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand NoDataValue="-32768" band="2" dataType="Int16">
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">Debrecen-VRT.tif.0.tif</SourceFilename>
+      <SourceBand>2</SourceBand>
+      <SourceProperties DataType="Byte" RasterXSize="2923" RasterYSize="1950" BlockYSize="1950" BlockXSize="2923"/>
+      <SrcRect xOff="0" yOff="0" ySize="1950" xSize="2923"/>
+      <DstRect xOff="0" yOff="0" ySize="1950" xSize="2923"/>
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand NoDataValue="-32768" band="3" dataType="Int16">
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">Debrecen-VRT.tif.0.tif</SourceFilename>
+      <SourceBand>3</SourceBand>
+      <SourceProperties DataType="Byte" RasterXSize="2923" RasterYSize="1950" BlockYSize="1950" BlockXSize="2923"/>
+      <SrcRect xOff="0" yOff="0" ySize="1950" xSize="2923"/>
+      <DstRect xOff="0" yOff="0" ySize="1950" xSize="2923"/>
+    </SimpleSource>
+  </VRTRasterBand>
+</VRTDataset>

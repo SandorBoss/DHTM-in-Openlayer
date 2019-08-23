@@ -27,9 +27,16 @@ var transportLines = new ol.layer.Vector({
       style: vill
 });
 
+var katonai = new ol.layer.Tile({
+      source: new ol.source.XYZ({
+          url: './Debrecen-XYZ/{z}/{x}/{y}.png'
+      }),
+      opacity: 0.6
+});
+
 var map = new ol.Map({
   target: 'debrecen',
-  layers: [osm, transportLines],
+  layers: [osm, katonai, transportLines],
   view: startView
 });
 

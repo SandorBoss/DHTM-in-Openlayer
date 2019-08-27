@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
     <header>Debrecen város kötöttpályás tömegközlekedésének története</header>
     <div id="debrecen" class="map"></div>
     <script type="module" src=osmDebrecen.js></script>
+    <script type="module" src="jqueryActions.js"></script>
     <form>
     <fieldset id="day">
       <legend>Szűrés egy napra</legend>
@@ -46,6 +48,8 @@
         <input type="button" value="Mehet">
         <input type="reset">
       </p>
+      <input type="button" id="layerSwitch" value="Válts műholdra!">
+      <input type="button" id="extraLayer" value="Katonai térkép ki/be">
     </fieldset>
     </form>
     <footer>(C) 2019 Készítők: Balogh László, Böszörményi Sándor, Herczeg Balázs</footer>

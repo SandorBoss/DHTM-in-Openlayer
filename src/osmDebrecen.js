@@ -7,8 +7,6 @@ var startView = new ol.View({
 
 var geojsonUrl = './geojson/d_line.geojson';
 
-var mapLayers = [osm];
-
 var vill = new ol.style.Style({
        stroke: new ol.style.Stroke({ color: [255,192,0,.75], width: 3 })
 });
@@ -25,26 +23,26 @@ var transportLines = new ol.layer.Vector({
       style: vill
 });
 
-var osm = new ol.layer.Tile({
-  source: new ol.source.OSM()
-});
+var tileLayer = new ol.layer.Tile();
 
-var satellite = new ol.layer.Tile({
-  source: new ol.source.XYZ({
+var osm = new ol.source.OSM();
+
+var satellite = new ol.source.XYZ({
       url: 'http://www.google.hu/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}'
-  }),
+  });
+
+var debrecenXYZ = new ol.source.XYZ({
+  url: './Debrecen-XYZ/{z}/{x}/{y}.png'
 });
 
 var katonai = new ol.layer.Tile({
-      source: new ol.source.XYZ({
-          url: './Debrecen-XYZ/{z}/{x}/{y}.png'
-      }),
+      source: null,
       opacity: 0.6
 });
 
 var map = new ol.Map({
   target: 'debrecen',
-  layers: [osm, katonai, transportLines],
+  layers: [tileLayer, katonai, transportLines],
   view: startView
 });
 
@@ -64,3 +62,22 @@ function dontLeaveDebrecen(evt) {
 }
 
 map.on('moveend', dontLeaveDebrecen);
+
+$(document).ready(function(){
+  tileLayer.setSource(osm);
+  $("#layerSwitch").click(function(){
+      if (tileLayer.getSource() === osm) {
+        tileLayer.setSource(satellite);
+      } else {
+        tileLayer.setSource(osm);
+      }
+  });
+  $("#extraLayer").click(function(){
+    if (katonai.getSource()) {
+      katonai.setSource(null);
+    } else {
+      katonai.setSource(debrecenXYZ);
+    }
+  });
+});
+

@@ -68,8 +68,10 @@ $(document).ready(function(){
   $("#layerSwitch").click(function(){
       if (tileLayer.getSource() === osm) {
         tileLayer.setSource(satellite);
+        $("#layerSwitch").val("Válts utcatérképre!");
       } else {
         tileLayer.setSource(osm);
+        $("#layerSwitch").val("Válts műholdra!");
       }
   });
   $("#extraLayer").click(function(){
@@ -80,4 +82,3 @@ $(document).ready(function(){
     }
   });
 });
-

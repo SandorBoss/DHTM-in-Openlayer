@@ -73,15 +73,15 @@ $(document).ready(function(){
 		switch (tileLayer.getSource()) {
         case osm:
             tileLayer.setSource(satellite);
-            $("#layerSwitch").val("VĂĄlts tĂşristatĂŠrkĂŠpre!");
+            $("#layerSwitch").val("Túristatérkép");
             break;
         case satellite:
             tileLayer.setSource(turista);
-            $("#layerSwitch").val("VĂĄlts utcatĂŠrkĂŠpre!");
+            $("#layerSwitch").val("Utcatérkép");
             break;
         case turista:
             tileLayer.setSource(osm);
-            $("#layerSwitch").val("VĂĄlts mĹąholdra!");
+            $("#layerSwitch").val("Műhold");
             break;
         default:
             break;

@@ -1,0 +1,25 @@
+{
+  "name": "dhtm",
+  "version": "0.1.0",
+  "description": "",
+  "main": "omsDebrecen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SandorBoss/DHTM-in-Openlayer.git"
+  },
+  "keywords": [
+    "transport",
+    "map",
+    "gis",
+    "openlayers"
+  ],
+  "author": "Sándor Böszörményi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SandorBoss/DHTM-in-Openlayer/issues"
+  },
+  "homepage": "https://github.com/SandorBoss/DHTM-in-Openlayer#readme"
+}

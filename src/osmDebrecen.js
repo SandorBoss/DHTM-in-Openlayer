@@ -15,13 +15,15 @@ var troli = new ol.style.Style({
     stroke: new ol.style.Stroke({ color: [192,0,0,.75], width: 3 })
 });
 
-var transportLines = new ol.layer.Vector({
+var fullGeoJSON = new ol.layer.Vector({
     source: new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         url: geojsonUrl
     }),
     style: vill
 });
+
+var transportLines = fullGeoJSON;
 
 var tileLayer = new ol.layer.Tile();
 

@@ -77,15 +77,12 @@ function dontLeaveDebrecen(evt) {
 
 function checkDate(date) {
 	var isValidFormat = !(!date.toString().match(/^\d{4}-\d{2}-\d{2}$/));
-	console.log(date);
 	var dateToCheck = new Date(date);
 	var numericToday = dateObject.getTime();
-	var isValidDate = dateToCheck.getTime() <= numericToday;
-	console.log(dateToCheck.getTime() + " " + numericToday);
-	console.log(isValidDate)
-	//isValidDate = dateToCheck.toString().slice(0, 10) === date;
-	console.log(isValidFormat);
-	console.log(isValidDate);
+	var isValidDate = 
+		(dateToCheck.getTime() <= numericToday) && 
+		(dateToCheck.getTime() >= new Date("1887-10-07"))
+	;
 	return isValidFormat && isValidDate;
 }
 

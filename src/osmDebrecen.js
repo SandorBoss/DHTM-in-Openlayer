@@ -86,6 +86,23 @@ function checkDate(date) {
 	return isValidFormat && isValidDate;
 }
 
+var isValidLine;
+
+function checkLine(line) {
+	var lines = new Array();
+	$.getJSON({
+		url: geojsonUrl, 
+		success: 
+		function(data) {
+			for (var i = 0; i < data.features.length; i++) {
+				lines.push(data.features[i].properties.lines);
+			}
+			isValidLine = lines.indexOf(line) != -1;
+		},
+		async: false
+	});
+}
+
 map.on('moveend', dontLeaveDebrecen);
 
 $(document).ready(function(){
@@ -119,7 +136,10 @@ $(document).ready(function(){
 	});
 	
 	$("#filterDate").click(function() {
+		var dateToFilter;
+		var lineToFilter;
 		var date =  $("#dayText").val();
+		var selectedLine = $("#lineText").val();
 		if (!checkDate(date)) {
 			var today = thisYear + '-' + thisMonth + '-' + thisDay;
 			$("#dayText").val("");
@@ -130,6 +150,19 @@ $(document).ready(function(){
 				"Érvényes intervallum kezdete: 1887-10-07" + "\n" +
 				"Érvényes intervallum vége: " + today
 			);
+			dateToFilter = "";
+		} else {
+			dateToFilter = date;
+		}
+		checkLine(selectedLine);
+		if (!isValidLine && selectedLine != "") {
+			alert(
+				"Hibás járatszám: " + selectedLine + "\n" +
+				"A megjelölhető járatszámokért lsd. a forrás geoJSON fájlt!"
+			);
+			lineToFilter = "";
+		} else {
+			lineToFilter = selectedLine;
 		}
 	});
 });

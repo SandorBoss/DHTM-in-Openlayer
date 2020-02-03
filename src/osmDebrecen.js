@@ -1,5 +1,13 @@
 // this is the main engine
 
+var dateObject = new Date();
+	var thisYear = dateObject.getFullYear();
+	var thisMonth = 
+		((dateObject.getMonth() + 1) < 10 ? "0" : "") + 
+		(dateObject.getMonth() + 1).toString()
+	;
+	var thisDay = (dateObject.getDate() < 10 ? "0" : "") + dateObject.getDate().toString();
+
 var startView = new ol.View({
     center: ol.proj.fromLonLat([21.63079, 47.53013]),
     zoom: 12
@@ -67,10 +75,25 @@ function dontLeaveDebrecen(evt) {
 	}
 }
 
+function checkDate(date) {
+	var isValidFormat = !(!date.toString().match(/^\d{4}-\d{2}-\d{2}$/));
+	console.log(date);
+	var dateToCheck = new Date(date);
+	var numericToday = dateObject.getTime();
+	var isValidDate = dateToCheck.getTime() <= numericToday;
+	console.log(dateToCheck.getTime() + " " + numericToday);
+	console.log(isValidDate)
+	//isValidDate = dateToCheck.toString().slice(0, 10) === date;
+	console.log(isValidFormat);
+	console.log(isValidDate);
+	return isValidFormat && isValidDate;
+}
+
 map.on('moveend', dontLeaveDebrecen);
 
 $(document).ready(function(){
 	tileLayer.setSource(osm);
+	
 	$("#layerSwitch").click(function(){
 		switch (tileLayer.getSource()) {
         case osm:
@@ -89,11 +112,27 @@ $(document).ready(function(){
             break;
 		}
 	});
+	
 	$("#extraLayer").click(function(){
 		if (katonai.getSource()) {
 			katonai.setSource(null);
 		} else {
 			katonai.setSource(debrecenXYZ);
+		}
+	});
+	
+	$("#filterDate").click(function() {
+		var date =  $("#dayText").val();
+		if (!checkDate(date)) {
+			var today = thisYear + '-' + thisMonth + '-' + thisDay;
+			$("#dayText").val("");
+			alert(
+				"Hibás dátum!" + "\n" + 
+				"A dátumot a következő formátumban kell megadnod: " +
+				"ÉÉÉÉ-HH-NN" + "\n" +
+				"Érvényes intervallum kezdete: 1887-10-07" + "\n" +
+				"Érvényes intervallum vége: " + today
+			);
 		}
 	});
 });
